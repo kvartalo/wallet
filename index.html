@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>kvartalo wallet</title>
+  <link rel="icon" type="image/png" href="img/web-wallet-icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta name="viewport" content="width=device-width, user-scalable=no" />
+  <link rel="manifest" href="manifest.json" />
+
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/utils.css">
+  <link rel="stylesheet" href="css/dark-theme.css">
+  <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"
+    integrity="sha256-NuCn4IvuZXdBaFKJOAcsU2Q3ZpwbdFisd5dux4jkQ5w=" crossorigin="anonymous" />
+
+  <!-- toastr -->
+  <link href="node_modules/toastr/build/toastr.css" rel="stylesheet" />
+
+  <!-- to delete and use another in the future -->
+</head>
+
+<body class="dark-theme">
+  <div id="wallet-maincard" class="card mainBox">
+    <!-- menu -->
+    <ul class="nav nav-tabs nav-fill" id="myTab" role="tablist">
+      <li class="nav-item">
+        <a class="nav-link active" id="history-tab" data-toggle="tab" href="#history" role="tab" aria-controls="history"
+          aria-selected="false" onclick="onHistoryTabActivated()" title="Refresh History">
+          <i class="fa fa-home fa-2x" aria-hidden="true"></i>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="send-tab" data-toggle="tab" href="#send" role="tab" aria-controls="send"
+          aria-selected="false" onclick="onSendTabActivated()">
+          <i class="fa fa-paper-plane-o fa-2x" aria-hidden="true"></i>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link " id="receive-tab" data-toggle="tab" href="#receive" role="tab" aria-controls="receive"
+          aria-selected="true" onclick="onRecieveTabActivated()">
+          <i class="fa fa-qrcode fa-2x" aria-hidden="true"></i>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link " onclick="onConfigTabActivated()" id="config-tab" data-toggle="tab" href="#config"
+          role="tab" aria-controls="receive" aria-selected="true">
+          <i class="fa fa-cog fa-2x" aria-hidden="true"></i>
+        </a>
+      </li>
+    </ul>
+    <div class="card-body">
+      <!-- menu -->
+      <div class="tab-content" id="myTabContent">
+        <!-- historic -->
+        <div class="tab-pane fade show active" id="history" role="tabpanel" aria-labelledby="history-tab">
+          <div class="balanceBox">
+            Current balance
+            <h3>
+              <span id="myBalanceBox">0</span> KVT
+            </h3>
+            <span id="myAddrLabel"></span>
+	    <br>
+	    <div id="spinnerBalance" class="spinner-border" role="status">
+	        <span class="sr-only">Loading...</span>
+	    </div>
+          </div>
+
+          <br>
+          <!-- <span class="badge color_primary float-right" style="font-size:medium;">
+                  <span id="myBalanceBox">0</span> KVT
+                </span>
+                <h5 class="card-title">Saldo actual</h5> -->
+
+
+	<!-- Msg -->
+	  <div style="border:1px #aa80ff solid; border-radius: 5px; padding: 20px; color: #aa80ff;">
+		  <b>Warning</b>: Testnet wallet only
+	  </div><br>
+
+
+
+          <h5 class="card-title">History</h5>
+          <hr>
+          <!--<canvas id="historyChart" width="400" height="200"></canvas> -->
+          <ul class="list-group" id="historyBox">
+          </ul>
+        </div>
+        <!-- send -->
+        <div class="tab-pane fade" id="send" role="tabpanel" aria-labelledby="send-tab">
+          <h5 class="card-title">Send new Tx</h5>
+          <hr>
+          <p class="card-text">
+            <div class="form-group">
+              <label for="amount">Scan QR</label>&nbsp;&nbsp;
+              <div id="manualto" onclick="cancelScanQR()" class="btn btn-sm btn-outline-warning">
+                  Manual
+              </div>
+
+              <div id="changeCameraButton" class="btn btn-sm btn-outline-info invisible" onclick="changeCameraButton()"><i class="fa fa-refresh" aria-hidden="true"></i>&nbsp;<i
+                  class="fa fa-video-camera" aria-hidden="true"></i></div>
+
+              <div id="qrscannerBox" class="card invisible" style="height:200px; display:flex; justify-content:center; overflow:hidden">
+                <video id="preview" ></video>
+              </div>
+              <input id="toAddr" type="text" class="form-control invisible" placeholder="Address">
+              <br>
+              <label id="amountlabel" for="amount">Amount</label>
+              <input id="amount" type="number" class="form-control-lg text-right" placeholder="0.00" value="">
+            </div>
+          </p>
+          <br>
+          <button id="sendButton" onclick="transact()" class="btn color_primary float-right">
+            Send
+          </button>
+          <div id="spinnerTx" class="spinner-border invisible" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div>
+        <!-- recieve -->
+        <div class="tab-pane fade" id="receive" role="tabpanel" aria-labelledby="receive-tab">
+          <h5 class="card-title">Receive Tx</h5>
+          <hr>
+          <div class="card-text" style="align-content: center">
+            <div id="qrcode"></div>
+            <input id="myAddrBox" onclick="shareAddress()" readonly="readonly" type="text" placeholder="my address"
+              class="form-control" style="font-size: 8pt; border-width: 0; text-align: center">
+          </div>
+        </div>
+        <!-- config -->
+        <div class="tab-pane fade" id="config" role="tabpanel" aria-labelledby="config-tab">
+
+          <h5><i class="fa fa-info" aria-hidden="true"></i> Info</h5>
+          <hr>
+          <div>
+            <b>What is?</b> Kvartalo is a free software project for social local currencies creation.<br>
+            More information <a href="https://kvartalo.xyz" target="_blank">here</a>.<br>
+
+          </div>
+          <br>
+          <h5><i class="fa fa-sliders" aria-hidden="true"></i> General configuration</h5>
+          <hr>
+          Colour theme:
+          <div class="onoffswitch" style="display:inline-block;margin: 10px;" title="change theme">
+            <input onclick="switchThemeClick()" type="checkbox" name="onoffswitch" class="onoffswitch-checkbox"
+              id="themeSwitcher" checked>
+            <label class="onoffswitch-label" for="themeSwitcher"></label>
+          </div>
+          <br><br>
+          <h5><i class="fa fa-life-ring" aria-hidden="true"></i> Backup</h5>
+          <hr>
+          <div class="accordion" id="accordionExample">
+            <div>
+              <div class="card-header" id="headingOne">
+                <h2 class="mb-0">
+                  <button class="btn color_primary collapsed" type="button" data-toggle="collapse"
+                    data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" onclick="showSeed()">
+                    Save backup
+                  </button>
+                </h2>
+              </div>
+
+              <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                <div class="card-body">
+
+                  <h3>Wallet Backup</h3>
+                  <p>Download the backup and store it in a safe place</p>
+                  <div onclick="downloadBackup()" class="btn btn-sm color_primary float-right">Download</div>
+                  <br>
+                  <hr>
+                  <p>As an alternative, write down these words in a paper and store it in a safe place</p>
+                  <code id="seed" class="disable-selection"></code>
+
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="card-header" id="headingTwo">
+                <h2 class="mb-0">
+                  <button class="btn color_primary collapsed" type="button" data-toggle="collapse"
+                    data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    Import backup
+                  </button>
+                </h2>
+              </div>
+              <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                <div class="card-body">
+
+                  <h3>Recover wallet from backup</h3>
+                  <p>Recover from a backup file</p>
+                  <div class="upload-btn-wrapper float-right">
+                    <div class="btn color_primary">Load the backup file</div>
+                    <input id="backup-upload" type="file" accept="text/backup" name="backupFile"
+                      oninput="uploadBackup()" />
+                  </div>
+                  <br><br>
+                  <hr>
+                  <p>As an alternative, recover the wallet from the 'seed'. Write down the seed here</p>
+                  <input id="seed-input" type="text" placeholder="my seed" class="form-control">
+                  <br>
+                  <div onclick="importInputSeed()" class="btn btn-outline-info btn-sm float-right">
+                    Recover
+                  </div>
+                  <br>
+                  <h3>Delete</h3>
+                  <hr>
+                  <div style="margin-bottom:0;margin-right:10px;" class="float-right btn btn-outline-danger"
+                    title="reset wallet" onclick="resetWallet()">
+                    Delete current wallet and create new one
+                  </div>        
+          </div>
+                  </div>        
+                </div>
+              </div>
+            </div>
+          </div>
+          <br><br>
+        
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- <script type="text/javascript" src="lib/instascan-browserified.js"></script> -->
+  <script type="text/javascript" src="lib/instascan.min.js"></script>
+  <script type="text/javascript" src="lib/qrcode.min.js"></script>
+  <script src="node_modules/jquery/dist/jquery.min.js"></script>
+  <script src="node_modules/toastr/build/toastr.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+    integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+    crossorigin="anonymous"></script>
+  <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+
+
+  <script>
+    let theme = localStorage.getItem("theme");
+    if (theme === "light") {
+      document.getElementById("themeSwitcher").checked = false;
+      document.body.className = theme;
+    }
+
+    function switchThemeClick() {
+      theme = localStorage.getItem("theme");
+      if (theme === "light") {
+        document.getElementById("themeSwitcher").checked = true;
+        theme = "dark-theme";
+        localStorage.setItem("theme", theme);
+      } else {
+        document.getElementById("themeSwitcher").checked = false;
+        theme = "light";
+        localStorage.setItem("theme", theme);
+      }
+      document.body.className = theme;
+    }
+
+    toastr.options = {
+      "closeButton": false,
+      "debug": false,
+      "newestOnTop": false,
+      "progressBar": true,
+      "positionClass": "toast-bottom-right",
+      "preventDuplicates": false,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "5000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut"
+    };
+  </script>
+
+  <script src="node_modules/axios/dist/axios.min.js"></script>
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.bundle.min.js"></script> -->
+
+  <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.34/dist/web3.min.js"></script>
+  <script src="lib/ethereumjs-util-browserified.js"></script>
+  <script src="lib/ethereumjs-wallet-browserified.js"></script>
+  <script src="lib/bip39-browserified.js"></script>
+  <script src="lib/hdkey-browserified.js"></script>
+  <script src="js/constants.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/settings.js"></script>
+  <script src="js/qr-utils.js"></script>
+  <script src="js/wallet.js"></script>
+  <script src="js/history.js"></script>
+  <script src="js/index.js"></script>
+
+</body>
+
+</html>
