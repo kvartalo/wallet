@@ -35,7 +35,7 @@ function startScanQR() {
         $("#changeCameraButton").removeClass("invisible") 
       }
     } else {
-      console.error('No es pot localitzar cap càmara');
+      console.error('Can not detect any camera');
     }
   }).catch(function (e) {
     console.error(e);

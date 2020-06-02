@@ -281,11 +281,14 @@
   <script src="node_modules/axios/dist/axios.min.js"></script>
   <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.bundle.min.js"></script> -->
 
-  <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.34/dist/web3.min.js"></script>
-  <script src="lib/ethereumjs-util-browserified.js"></script>
-  <script src="lib/ethereumjs-wallet-browserified.js"></script>
-  <script src="lib/bip39-browserified.js"></script>
-  <script src="lib/hdkey-browserified.js"></script>
+  <script src="lib/wasm_exec.js"></script>
+  <script>
+    const go = new Go();
+    WebAssembly.instantiateStreaming(fetch('lib/kvartalochain.wasm'), go.importObject).then(function(dat) {
+        go.run(dat.instance);
+    });
+  </script>
+
   <script src="js/constants.js"></script>
   <script src="js/utils.js"></script>
   <script src="js/settings.js"></script>

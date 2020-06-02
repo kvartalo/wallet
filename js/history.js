@@ -1,8 +1,8 @@
 function generateHistoryElement(ownAddr, from, to, value, date) {
 	if (from==ownAddr) {
-		from="Jo";
+		from="Me";
 	} else if (to==ownAddr) {
-		to = "Jo";
+		to = "Me";
 	}
 	if (from.length == 42) {
 		from = from.slice(2,9)
@@ -23,7 +23,7 @@ function generateHistoryElement(ownAddr, from, to, value, date) {
 		<div class="float-right">
 		`;
 
-	if (from==="Jo") {
+	if (from==="Me") {
 		html += `<span class="badge color_output">`
 		value = -value;
 	} else {
@@ -39,16 +39,16 @@ function generateHistoryElement(ownAddr, from, to, value, date) {
 
 
 function getHistory(addr) {
-	axios.get(RELAYURL + '/history/' + addr)
-	  .then(function (res) {
-	    console.log(res.data);
-	    printHistory(addr, res.data.transfers);
-	    // generateHistoryChart(addr, res.data.transfers);
-	  })
-	  .catch(function (error) {
-	    console.log(error);
-	    toastr.error(error);
-	  });
+	// axios.get(RELAYURL + '/history/' + addr)
+	//   .then(function (res) {
+	//     console.log(res.data);
+	//     printHistory(addr, res.data.transfers);
+	//     // generateHistoryChart(addr, res.data.transfers);
+	//   })
+	//   .catch(function (error) {
+	//     console.log(error);
+	//     toastr.error(error);
+	//   });
 }
 
 function printHistory(ownAddr, transfers) {
@@ -118,7 +118,7 @@ function generateHistoryChart(ownAddr, transfers) {
 
 
 function getBalance() {
-	console.log("recuperant saldo");
+	console.log("recuperant saldo", myAddr);
 	// show current myAddr balance
 	axios.get(RELAYURL + '/balance/' + myAddr)
 	  .then(function (res) {
@@ -150,6 +150,6 @@ function getBalance() {
 }
 
 function onBalanceChanged() {
-	$('#amountlabel').text("Quantitat ("+formatMoney(myBalance/100)+"KVT disponibles)")
+	$('#amountlabel').text("Amount ("+formatMoney(myBalance/100)+"KVT available)")
 	getHistory(myAddr);
 }

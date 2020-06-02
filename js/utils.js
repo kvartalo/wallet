@@ -21,7 +21,7 @@ function selectAndCopy(e) {
   let copyText = e;
   copyText.select();
   document.execCommand("copy");
-  toastr.success("dades copiades al portaretalls");  
+  toastr.success("data copied to clipboard");  
 }
 
 function bytesToHex(buff) {
