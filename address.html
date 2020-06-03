@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Cartera kvartalo</title>
+  <title>kvartalo address visualizer</title>
   <link rel="icon" type="image/png" href="img/web-wallet-icon.png">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="css/style.css">
@@ -23,32 +23,32 @@
   <div class="card mainBox">
 
     <div id="addrBox" class="card-body invisible">
-      <h3>Visualitza una adreça</h3>
+      <h3>View an address</h3>
       <input id="addrInput" type="text" class="form-control" placeholder="Adreça a visualitzar">
       <br>
-      <a href="/" class="btn btn-outline-danger">Enrera</a>
-      <div onclick="goToAddress()" class="btn color_primary float-right">Visualitza</div>
+      <a href="/" class="btn btn-outline-danger">Back</a>
+      <div onclick="goToAddress()" class="btn color_primary float-right">View</div>
     </div>
     <div id="mainBox" class="card-body">
-      <h2>visualitza adreça</h2>
+      <h2>View address</h2>
       <code id="addressPrint" style="font-size:150%;"></code>
       <hr>
       <div class="tab-pane fade show active" id="history" role="tabpanel" aria-labelledby="history-tab">
         <div class="balanceBox">
-          Saldo actual
+          Balance
           <h3>
             <span id="myBalanceBox">0</span> KVT
           </h3>
           <span id="myAddrLabel"></span>
           <br>
           <div id="spinnerBalance" class="spinner-border" role="status">
-           <span class="sr-only">Carregant...</span>
+           <span class="sr-only">Loading...</span>
           </div>
 
         </div>
 
         <br>
-        <h5 class="card-title">Històric</h5>
+        <h5 class="card-title">History</h5>
         <hr>
         <ul class="list-group" id="historyBox">
         </ul>
@@ -60,7 +60,7 @@
 
   <div class="fixed-bottom" style="padding: 30px;text-align:center;">
     <a href="https://kvartalo.xyz" target="_blank">
-      kvartalo 2019
+      kvartalo 2020
     </a>
   </div>
 

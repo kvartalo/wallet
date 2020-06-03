@@ -39,23 +39,25 @@ function generateHistoryElement(ownAddr, from, to, value, date) {
 
 
 function getHistory(addr) {
-	// axios.get(RELAYURL + '/history/' + addr)
-	//   .then(function (res) {
-	//     console.log(res.data);
-	//     printHistory(addr, res.data.transfers);
-	//     // generateHistoryChart(addr, res.data.transfers);
-	//   })
-	//   .catch(function (error) {
-	//     console.log(error);
-	//     toastr.error(error);
-	//   });
+	axios.get(RELAYURL + '/history/' + addr)
+	  .then(function (res) {
+	    console.log(res.data);
+	    if (res.data.txs!=null) {
+	      printHistory(addr, res.data.txs);
+	    }
+	    // generateHistoryChart(addr, res.data.transfers);
+	  })
+	  .catch(function (error) {
+	    console.log(error);
+	    toastr.error(error);
+	  });
 }
 
 function printHistory(ownAddr, transfers) {
   let html = '';
   for(let i=0; i<transfers.length; i++) {
-	  if(transfers[i].Value>0) {
-		html += generateHistoryElement(ownAddr, transfers[i].From, transfers[i].To, transfers[i].Value, transfers[i].Timestamp);
+	  if(transfers[i].amount>0) {
+		html += generateHistoryElement(ownAddr, transfers[i].from, transfers[i].to, transfers[i].amount, transfers[i].timestamp);
 	  }
   }
   document.getElementById('historyBox').innerHTML = html;
