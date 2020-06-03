@@ -1,5 +1,6 @@
 
 const RELAYURL = 'http://127.0.0.1:3000';
+const REFRESHTIME = 5000;
 
 let myAddr = "";
 let myBalance = 0;

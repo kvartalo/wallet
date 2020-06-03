@@ -21,6 +21,7 @@ setTimeout(function() {
     // downloadBackup();
   }
   myAddr = localStorage.getItem("myAddr");
+  mySk = localStorage.getItem("mySk");
   console.log("myAddr", myAddr);
 
 
@@ -65,11 +66,12 @@ function transact() {
       console.log("myNonce " + myNonce);
 
       // TODO wasm newTxAndSign()
-      console.log(txData);
-      axios.post(RELAYURL + '/tx', txData)
+      const tx = newTxAndSign(mySk, toAddr, JSON.stringify(amount), JSON.stringify(myNonce))
+      console.log("txHex", tx);
+      axios.post(RELAYURL + '/tx',{txHex: tx.txHex})
 	.then(function (res) {
 	  console.log(res.data);
-	  toastr.success("transferència realitzada");
+	  toastr.success("tx done");
 	  $('.nav-tabs a[href="#history"]').tab('show');
 	  document.getElementById('spinnerTx').className += 'invisible';
 	})
@@ -138,6 +140,6 @@ function refreshBalance() {
   getBalance();
   setTimeout(function(){
     refreshBalance();
-  }, 30000);
+  }, REFRESHTIME);
 }
 
