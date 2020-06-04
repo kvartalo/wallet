@@ -129,6 +129,7 @@ function getBalance() {
 			if (!initialized || myBalance != Number(res.data.balance)) {
 				if (initialized) {
 					beep();
+					toastr.success("Balance updated: " + Number(res.data.balance)/100);
 					getHistory(myAddr);
 					 // as the relay needs some time to get the history data:
 					setTimeout(getHistory(myAddr), 10000);

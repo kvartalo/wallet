@@ -62,7 +62,9 @@
             <h3>
               <span id="myBalanceBox">0</span> KVT
             </h3>
-            <span id="myAddrLabel"></span>
+            <!-- <span id="myAddrLabel"></span> -->
+            <input id="myAddrBox0" onclick="shareAddress('myAddrBox0')" readonly="readonly" type="text" placeholder="my address"
+              class="form-control" style="font-size: 14pt; border-width: 0; text-align: center; color: #ffffff;">
 	    <br>
 	    <div id="spinnerBalance" class="spinner-border" role="status">
 	        <span class="sr-only">Loading...</span>
@@ -126,8 +128,8 @@
           <hr>
           <div class="card-text" style="align-content: center">
             <div id="qrcode"></div>
-            <input id="myAddrBox" onclick="shareAddress()" readonly="readonly" type="text" placeholder="my address"
-              class="form-control" style="font-size: 8pt; border-width: 0; text-align: center">
+            <input id="myAddrBox1" onclick="shareAddress('myAddrBox1')" readonly="readonly" type="text" placeholder="my address"
+              class="form-control" style="font-size: 10pt; border-width: 0; text-align: center">
           </div>
         </div>
         <!-- config -->

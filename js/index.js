@@ -29,8 +29,9 @@ setTimeout(function() {
   new QRCode(document.getElementById('qrcode'), myAddr);
   $("#qrcode > img").css({"margin":"auto"});
   // show myAddr
-  document.getElementById('myAddrBox').value=myAddr;
-  document.getElementById('myAddrLabel').innerHTML=myAddr;
+  document.getElementById('myAddrBox0').value=myAddr;
+  document.getElementById('myAddrBox1').value=myAddr;
+  // document.getElementById('myAddrLabel').innerHTML=myAddr;
 
   refreshBalance();
 

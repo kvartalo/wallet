@@ -4,13 +4,13 @@ function beep() {
   snd.play();
 }
 
-function shareAddress() {
+function shareAddress(id) {
   try {
     navigator.share({
-      text: $("#myAddrBox").val()
+      text: $("#"+id).val()
     })
   } catch {
-    const e = document.getElementById("myAddrBox")
+    const e = document.getElementById(id)
     selectAndCopy(e)
   }
 }
